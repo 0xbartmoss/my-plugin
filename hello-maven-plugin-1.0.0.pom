@@ -10,6 +10,10 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.plugin.tools.version>3.13.0</maven.plugin.tools.version>
+    <maven.plugin.site.version>0.12</maven.plugin.site.version>
+    <deploy.branch.name>main</deploy.branch.name>
+    <deploy.repository.name>my-plugin</deploy.repository.name>
+    <deploy.repository.owner>0xbartmoss</deploy.repository.owner>
   </properties>
 
   <dependencies>
@@ -42,6 +46,32 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>${maven.plugin.site.version}</version>
+                <configuration>
+                    <message>${project.groupId}:${project.artifactId}:${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${deploy.temporaryArtifactDir}</outputDirectory>
+                    <branch>refs/heads/${deploy.branch.name}</branch>
+                    <includes>
+                        <include>*/**</include>
+                    </includes>
+                    <merge>true</merge>
+                    <repositoryName>${deploy.repository.name}</repositoryName>
+                    <repositoryOwner>${deploy.repository.owner}</repositoryOwner>
+                    <server>github</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
     </plugins>
   </build>
 </project>
